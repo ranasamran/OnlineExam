@@ -57,7 +57,7 @@ const Results: React.FC = () => {
         <section className="flex flex-col gap-4">
           <h2 className="text-xl font-bold px-1">Answer Breakdown</h2>
           <div className="flex flex-col gap-4">
-             {/* Mock Items */}
+             {/* Mock Items showing variety of question types */}
              <ResultItem 
                 qId={1} 
                 question="What is the theory of relativity?" 
@@ -74,19 +74,19 @@ const Results: React.FC = () => {
                 explanation="While Isaac Newton developed the laws of motion and universal gravitation, Albert Einstein developed the theory of general relativity in the early 20th century."
              />
              <ResultItem 
-                qId={3} 
-                question="What is a black hole?" 
-                userAns="A region of spacetime where gravity is so strong that nothing can escape." 
-                correctAns="A region of spacetime where gravity is so strong that nothing can escape."
-                isCorrect={true}
-             />
-             <ResultItem 
-                qId={4} 
-                question="Which of the following are primary colors? (Mock Multiple Select)" 
+                qId={23} 
+                question="Which of the following are primary colors? (Multiple Select)" 
                 userAns={["Red", "Blue"]} 
                 correctAns={["Red", "Blue", "Green"]}
                 isCorrect={false}
                 explanation="RGB model includes Red, Green, and Blue."
+             />
+             <ResultItem 
+                qId={35} 
+                question="Who is considered the 'father of psychoanalysis'?" 
+                userAns="Sigmund Freud" 
+                correctAns="Sigmund Freud"
+                isCorrect={true}
              />
           </div>
         </section>
