@@ -80,6 +80,14 @@ const Results: React.FC = () => {
                 correctAns="A region of spacetime where gravity is so strong that nothing can escape."
                 isCorrect={true}
              />
+             <ResultItem 
+                qId={4} 
+                question="Which of the following are primary colors? (Mock Multiple Select)" 
+                userAns={["Red", "Blue"]} 
+                correctAns={["Red", "Blue", "Green"]}
+                isCorrect={false}
+                explanation="RGB model includes Red, Green, and Blue."
+             />
           </div>
         </section>
 
@@ -108,42 +116,56 @@ const StatBox: React.FC<{ title: string; value: string }> = ({ title, value }) =
   </div>
 );
 
-const ResultItem: React.FC<{ qId: number; question: string; userAns: string; correctAns: string; isCorrect: boolean; explanation?: string }> = ({ qId, question, userAns, correctAns, isCorrect, explanation }) => (
-  <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden">
-    <details className="group" open={!isCorrect}>
-      <summary className="flex items-center justify-between p-5 cursor-pointer list-none bg-gray-50/50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-        <div className="flex items-center gap-4">
-           <span className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold ${isCorrect ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'}`}>
-             {qId}
-           </span>
-           <span className="font-medium text-lg">{question}</span>
-        </div>
-        <span className={`material-symbols-outlined text-2xl ${isCorrect ? 'text-success' : 'text-danger'}`}>
-          {isCorrect ? 'check_circle' : 'cancel'}
-        </span>
-      </summary>
-      <div className="p-5 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-3">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-           <div className={`p-4 rounded-lg ${isCorrect ? 'bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/30' : 'bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30'}`}>
-             <p className={`text-xs font-bold uppercase mb-1 ${isCorrect ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400'}`}>Your Answer</p>
-             <p className="text-gray-800 dark:text-gray-200">{userAns}</p>
-           </div>
-           {!isCorrect && (
-             <div className="p-4 rounded-lg bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/30">
-               <p className="text-xs font-bold uppercase mb-1 text-green-700 dark:text-green-400">Correct Answer</p>
-               <p className="text-gray-800 dark:text-gray-200">{correctAns}</p>
-             </div>
-           )}
-        </div>
-        {explanation && (
-          <div className="mt-2 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 text-sm">
-            <span className="font-bold text-blue-800 dark:text-blue-300">Explanation: </span>
-            <span className="text-blue-900 dark:text-blue-200">{explanation}</span>
+const ResultItem: React.FC<{ 
+  qId: number; 
+  question: string; 
+  userAns: string | string[]; 
+  correctAns: string | string[]; 
+  isCorrect: boolean; 
+  explanation?: string 
+}> = ({ qId, question, userAns, correctAns, isCorrect, explanation }) => {
+  
+  const formatAns = (ans: string | string[]) => Array.isArray(ans) ? ans.join(', ') : ans;
+  const displayUserAns = formatAns(userAns);
+  const displayCorrectAns = formatAns(correctAns);
+
+  return (
+    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden">
+      <details className="group" open={!isCorrect}>
+        <summary className="flex items-center justify-between p-5 cursor-pointer list-none bg-gray-50/50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <div className="flex items-center gap-4">
+            <span className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold ${isCorrect ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'}`}>
+              {qId}
+            </span>
+            <span className="font-medium text-lg">{question}</span>
           </div>
-        )}
-      </div>
-    </details>
-  </div>
-);
+          <span className={`material-symbols-outlined text-2xl ${isCorrect ? 'text-success' : 'text-danger'}`}>
+            {isCorrect ? 'check_circle' : 'cancel'}
+          </span>
+        </summary>
+        <div className="p-5 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={`p-4 rounded-lg ${isCorrect ? 'bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/30' : 'bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30'}`}>
+              <p className={`text-xs font-bold uppercase mb-1 ${isCorrect ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400'}`}>Your Answer</p>
+              <p className="text-gray-800 dark:text-gray-200">{displayUserAns}</p>
+            </div>
+            {!isCorrect && (
+              <div className="p-4 rounded-lg bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/30">
+                <p className="text-xs font-bold uppercase mb-1 text-green-700 dark:text-green-400">Correct Answer</p>
+                <p className="text-gray-800 dark:text-gray-200">{displayCorrectAns}</p>
+              </div>
+            )}
+          </div>
+          {explanation && (
+            <div className="mt-2 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 text-sm">
+              <span className="font-bold text-blue-800 dark:text-blue-300">Explanation: </span>
+              <span className="text-blue-900 dark:text-blue-200">{explanation}</span>
+            </div>
+          )}
+        </div>
+      </details>
+    </div>
+  );
+};
 
 export default Results;

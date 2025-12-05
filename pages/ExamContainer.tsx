@@ -22,16 +22,23 @@ const QuestionInput: React.FC<{
           return (
             <label 
               key={idx} 
-              className={`flex items-center gap-4 rounded-lg border p-4 transition-all cursor-pointer ${isSelected ? 'border-primary bg-primary/5 ring-1 ring-primary/20' : 'border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+              className={`group flex items-center gap-4 rounded-xl border p-4 transition-all cursor-pointer ${isSelected ? 'border-primary bg-primary/5 ring-1 ring-primary/20 shadow-sm' : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:border-primary/50 dark:hover:border-primary/50'}`}
             >
-              <input 
-                type="radio" 
-                name={`q-${question.id}`} 
-                className="h-5 w-5 text-primary border-gray-300 focus:ring-primary"
-                checked={isSelected}
-                onChange={() => onChange(opt)}
-              />
-              <span className="text-gray-800 dark:text-gray-200 text-sm font-medium">{String.fromCharCode(65 + idx)}. {opt}</span>
+              <div className="relative flex items-center justify-center">
+                <input 
+                  type="radio" 
+                  name={`q-${question.id}`} 
+                  className="peer h-5 w-5 text-primary border-gray-300 focus:ring-primary focus:ring-offset-0 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+                  checked={isSelected}
+                  onChange={() => onChange(opt)}
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className={`text-sm font-medium transition-colors ${isSelected ? 'text-primary dark:text-primary-400' : 'text-gray-800 dark:text-gray-200'}`}>
+                  <span className="opacity-70 mr-2">{String.fromCharCode(65 + idx)}.</span> 
+                  {opt}
+                </span>
+              </div>
             </label>
           );
         })}
@@ -48,21 +55,28 @@ const QuestionInput: React.FC<{
           return (
             <label 
               key={idx}
-              className={`flex items-center gap-4 rounded-lg border p-4 transition-all cursor-pointer ${isSelected ? 'border-primary bg-primary/5 ring-1 ring-primary/20' : 'border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+              className={`group flex items-center gap-4 rounded-xl border p-4 transition-all cursor-pointer ${isSelected ? 'border-primary bg-primary/5 ring-1 ring-primary/20 shadow-sm' : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:border-primary/50 dark:hover:border-primary/50'}`}
             >
-              <input 
-                type="checkbox" 
-                className="h-5 w-5 rounded text-primary border-gray-300 focus:ring-primary"
-                checked={isSelected}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    onChange([...selectedArr, opt]);
-                  } else {
-                    onChange(selectedArr.filter(item => item !== opt));
-                  }
-                }}
-              />
-              <span className="text-gray-800 dark:text-gray-200 text-sm font-medium">{String.fromCharCode(65 + idx)}. {opt}</span>
+              <div className="relative flex items-center justify-center">
+                <input 
+                  type="checkbox" 
+                  className="peer h-5 w-5 rounded text-primary border-gray-300 focus:ring-primary focus:ring-offset-0 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+                  checked={isSelected}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      onChange([...selectedArr, opt]);
+                    } else {
+                      onChange(selectedArr.filter(item => item !== opt));
+                    }
+                  }}
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className={`text-sm font-medium transition-colors ${isSelected ? 'text-primary dark:text-primary-400' : 'text-gray-800 dark:text-gray-200'}`}>
+                  <span className="opacity-70 mr-2">{String.fromCharCode(65 + idx)}.</span>
+                  {opt}
+                </span>
+              </div>
             </label>
           );
         })}
@@ -72,25 +86,31 @@ const QuestionInput: React.FC<{
 
   if (question.type === QuestionType.ShortAnswer) {
     return (
-      <input 
-        type="text" 
-        className="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-700 dark:text-gray-200"
-        placeholder="Type your answer here..."
-        value={typeof answer === 'string' ? answer : ''}
-        onChange={(e) => onChange(e.target.value)}
-      />
+      <div className="w-full">
+        <input 
+          type="text" 
+          className="w-full rounded-xl border border-gray-300 bg-white dark:bg-gray-800 px-4 py-3.5 text-base text-gray-900 placeholder-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 dark:border-gray-700 dark:text-white dark:focus:ring-primary/20 transition-all shadow-sm"
+          placeholder="Type your answer here..."
+          value={typeof answer === 'string' ? answer : ''}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      </div>
     );
   }
 
   if (question.type === QuestionType.Essay) {
     return (
-      <textarea 
-        className="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-700 dark:text-gray-200"
-        placeholder="Type your essay response here..."
-        rows={8}
-        value={typeof answer === 'string' ? answer : ''}
-        onChange={(e) => onChange(e.target.value)}
-      />
+      <div className="w-full">
+        <textarea 
+          className="w-full min-h-[240px] rounded-xl border border-gray-300 bg-white dark:bg-gray-800 px-4 py-3.5 text-base text-gray-900 placeholder-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 dark:border-gray-700 dark:text-white dark:focus:ring-primary/20 transition-all shadow-sm resize-y leading-relaxed"
+          placeholder="Type your essay response here..."
+          value={typeof answer === 'string' ? answer : ''}
+          onChange={(e) => onChange(e.target.value)}
+        />
+        <div className="mt-2 text-right text-xs font-medium text-gray-400 dark:text-gray-500">
+           {(typeof answer === 'string' ? answer.length : 0)} characters
+        </div>
+      </div>
     );
   }
 
@@ -197,28 +217,29 @@ const ExamContainer: React.FC = () => {
               <div className="lg:col-span-2 flex flex-col gap-6">
                 
                 {/* Section Info Tab */}
-                <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
+                <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm transition-all">
                    <div className="border-b border-gray-200 dark:border-gray-800 px-6 py-4">
-                     <div className="flex items-center justify-between">
+                     <div className="flex items-center justify-between mb-3">
                        <h3 className="font-semibold text-gray-700 dark:text-gray-300">Section: {currentSection?.title || 'General'}</h3>
-                       <span className="text-xs font-medium bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Q{currentQuestionIndex + 1} of {MOCK_EXAM.totalQuestions}</span>
+                       <span className="text-xs font-bold bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2.5 py-1 rounded-md">Q{currentQuestionIndex + 1} / {MOCK_EXAM.totalQuestions}</span>
                      </div>
-                     <div className="mt-3 h-1.5 w-full rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden">
-                       <div className="h-full bg-primary transition-all duration-300" style={{ width: `${((currentQuestionIndex + 1) / MOCK_EXAM.totalQuestions) * 100}%` }}></div>
+                     <div className="h-1.5 w-full rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                       <div className="h-full bg-primary transition-all duration-300 ease-out" style={{ width: `${((currentQuestionIndex + 1) / MOCK_EXAM.totalQuestions) * 100}%` }}></div>
                      </div>
                    </div>
                    
                    <div className="p-6 md:p-8">
-                     <div className="flex flex-col gap-4 mb-8">
-                       <span className="text-primary text-xs font-bold uppercase tracking-wider">
+                     <div className="flex flex-col gap-3 mb-8">
+                       <span className="inline-flex self-start text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-1 rounded">
                         {currentQuestion.type === QuestionType.MultipleSelect ? "Multiple Select" : 
                          currentQuestion.type === QuestionType.Essay ? "Essay" : 
                          currentQuestion.type === QuestionType.ShortAnswer ? "Short Answer" : "Multiple Choice"}
                        </span>
-                       <h1 className="text-xl md:text-2xl font-bold leading-tight">{currentQuestion.text}</h1>
+                       <h1 className="text-xl md:text-2xl font-bold leading-tight text-gray-900 dark:text-white">{currentQuestion.text}</h1>
                      </div>
                      
                      <QuestionInput 
+                        key={currentQuestion.id}
                         question={currentQuestion} 
                         answer={currentAnswer} 
                         onChange={handleAnswerChange} 
@@ -231,7 +252,7 @@ const ExamContainer: React.FC = () => {
                   <button 
                     onClick={() => setCurrentQuestionIndex(prev => Math.max(0, prev - 1))}
                     disabled={currentQuestionIndex === 0}
-                    className="flex items-center justify-center gap-2 rounded-lg h-11 px-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-bold hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+                    className="flex items-center justify-center gap-2 rounded-lg h-11 px-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-bold hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm active:scale-[0.98]"
                   >
                     <span className="material-symbols-outlined text-lg">arrow_back</span>
                     Previous
@@ -244,7 +265,7 @@ const ExamContainer: React.FC = () => {
                          setCurrentQuestionIndex(prev => Math.min(MOCK_EXAM.totalQuestions - 1, prev + 1));
                        }
                     }}
-                    className="flex items-center justify-center gap-2 rounded-lg h-11 px-6 bg-primary text-white font-bold hover:bg-primary/90 transition-colors shadow-md shadow-primary/20"
+                    className="flex items-center justify-center gap-2 rounded-lg h-11 px-6 bg-primary text-white font-bold hover:bg-primary/90 transition-all shadow-md shadow-primary/20 active:scale-[0.98]"
                   >
                     {currentQuestionIndex === MOCK_EXAM.totalQuestions - 1 ? 'Review Exam' : 'Next Question'}
                     {currentQuestionIndex !== MOCK_EXAM.totalQuestions - 1 && <span className="material-symbols-outlined text-lg">arrow_forward</span>}
@@ -257,7 +278,7 @@ const ExamContainer: React.FC = () => {
             {viewMode === 'review' && (
               <div className="lg:col-span-2 flex flex-col gap-6">
                 <div className="flex flex-col gap-2 mb-2">
-                   <h1 className="text-3xl font-black">Review Your Answers</h1>
+                   <h1 className="text-3xl font-black text-gray-900 dark:text-white">Review Your Answers</h1>
                    <p className="text-gray-500 dark:text-gray-400">Please review your answers before final submission.</p>
                 </div>
 
@@ -343,11 +364,11 @@ const ExamContainer: React.FC = () => {
                     const isAns = answers[q.id] && (Array.isArray(answers[q.id]) ? answers[q.id].length > 0 : true);
                     const isFlg = flagged.has(q.id);
                     
-                    let bgClass = "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300";
+                    let bgClass = "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700";
                     if (isFlg) bgClass = "bg-orange-100 text-orange-700 border border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-800";
                     else if (isAns) bgClass = "bg-green-100 text-green-700 border border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800";
                     
-                    if (isCurrent) bgClass = "ring-2 ring-primary ring-offset-2 ring-offset-white dark:ring-offset-gray-900 bg-primary text-white border-transparent";
+                    if (isCurrent) bgClass = "ring-2 ring-primary ring-offset-2 ring-offset-white dark:ring-offset-gray-900 bg-primary text-white border-transparent shadow-lg shadow-primary/25";
 
                     return (
                       <button
@@ -363,7 +384,7 @@ const ExamContainer: React.FC = () => {
                     )
                   })}
                 </div>
-                <div className="mt-6 flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400">
+                <div className="mt-6 flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400 font-medium">
                   <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-green-500"></span> Answered</div>
                   <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-orange-400"></span> Flagged</div>
                   <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-gray-600"></span> Unanswered</div>
@@ -384,7 +405,7 @@ const ExamContainer: React.FC = () => {
                 
                 <button 
                   onClick={() => setShowSubmitModal(true)}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg h-11 px-4 bg-danger text-white text-sm font-bold shadow-md shadow-danger/20 hover:bg-danger/90 transition-all"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg h-11 px-4 bg-danger text-white text-sm font-bold shadow-md shadow-danger/20 hover:bg-danger/90 transition-all active:scale-[0.98]"
                 >
                   <span className="material-symbols-outlined text-lg">check_circle</span>
                   Submit Exam

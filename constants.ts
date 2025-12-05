@@ -22,7 +22,7 @@ export const MOCK_EXAM: Exam = {
     { id: 3, title: 'Clinical Applications' }
   ],
   questions: [
-    // Section 1
+    // Section 1 - Specific mocked questions
     {
       id: 12,
       sectionId: 2,
@@ -77,13 +77,36 @@ export const MOCK_EXAM: Exam = {
 // Generate filler questions to reach 50 total for UI visualization
 for (let i = 1; i <= 50; i++) {
   if (!MOCK_EXAM.questions.find(q => q.id === i)) {
+    const seed = i % 4;
+    let type = QuestionType.SingleChoice;
+    let text = `Question ${i}: This is a sample multiple choice question to demonstrate the interface.`;
+    let options: string[] | undefined = ["Option A", "Option B", "Option C", "Option D"];
+    let correctAnswer: string | string[] = "Option A";
+
+    if (seed === 1) {
+      type = QuestionType.MultipleSelect;
+      text = `Question ${i}: Select all the correct options for this multiple-select question.`;
+      options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
+      correctAnswer = ["Choice 1", "Choice 3"];
+    } else if (seed === 2) {
+      type = QuestionType.ShortAnswer;
+      text = `Question ${i}: Please provide a concise answer to this short-answer question.`;
+      options = undefined;
+      correctAnswer = "Answer";
+    } else if (seed === 3) {
+      type = QuestionType.Essay;
+      text = `Question ${i}: Write a detailed response explaining your reasoning on this essay topic.`;
+      options = undefined;
+      correctAnswer = "Essay response";
+    }
+
     MOCK_EXAM.questions.push({
       id: i,
       sectionId: i < 20 ? 1 : i < 40 ? 2 : 3,
-      type: QuestionType.SingleChoice,
-      text: `Question ${i}: This is a placeholder question text to simulate a full exam environment.`,
-      options: ["Option A", "Option B", "Option C", "Option D"],
-      correctAnswer: "Option A"
+      type,
+      text,
+      options,
+      correctAnswer
     });
   }
 }
